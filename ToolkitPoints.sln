@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.705
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolkitPoints", "ToolkitPoints\ToolkitPoints.csproj", "{BD020CB2-E536-48DF-93EA-8CAE3D33ADEF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BD020CB2-E536-48DF-93EA-8CAE3D33ADEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD020CB2-E536-48DF-93EA-8CAE3D33ADEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD020CB2-E536-48DF-93EA-8CAE3D33ADEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD020CB2-E536-48DF-93EA-8CAE3D33ADEF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67BC66A4-FC01-4417-BAD8-D9980C1E9A7C}
+	EndGlobalSection
+EndGlobal
