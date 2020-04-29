@@ -17,7 +17,7 @@ namespace ToolkitPoints
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            ToolkitPointsSettings.DoSettingsWindowContents(inRect);
+            GetSettings<ToolkitPointsSettings>().DoWindowContents(inRect);
         }
     }
 }

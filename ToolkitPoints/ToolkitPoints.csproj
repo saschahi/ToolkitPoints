@@ -36,6 +36,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddonMenu.cs" />
+    <Compile Include="ChatterParse.cs" />
+    <Compile Include="Chatters.cs" />
+    <Compile Include="GameComponent_RewardsManager.cs" />
+    <Compile Include="SimpleJson\SimpleJSON.cs" />
+    <Compile Include="SimpleJson\SimpleJSONBinary.cs" />
+    <Compile Include="SimpleJson\SimpleJSONUnity.cs" />
+    <Compile Include="TwitchAPI.cs" />
     <Compile Include="ToolkitPoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToolkitPointsSettings.cs" />
