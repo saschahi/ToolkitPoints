@@ -41,7 +41,7 @@ namespace ToolkitPoints
 
             if (listing.ButtonText("Update Chatters") && Current.Game != null)
             {
-                GameComponent_RewardsManager.TryRewardingViewers();
+                Rewarder.TryRewardingViewers();
             }
 
             listing.End();

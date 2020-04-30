@@ -37,6 +37,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActiveViewers.cs" />
     <Compile Include="AddonMenu.cs" />
     <Compile Include="ChatterParse.cs" />
     <Compile Include="Chatters.cs" />
