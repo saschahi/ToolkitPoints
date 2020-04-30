@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolkitCore.Models;
 using Verse;
 
 namespace ToolkitPoints
@@ -20,25 +21,11 @@ namespace ToolkitPoints
 
             TimeSpan timeSinceLastUpdate = DateTime.Now - lastUpdateCycle;
 
-            if (timeSinceLastUpdate.Minutes >= ToolkitPointsSettings.minutesBetweenRewards / 2)
+            if (timeSinceLastUpdate.Minutes >= ToolkitPointsSettings.minutesBetweenRewards)
             {
-                TryUpdateChatters();
-            }
-            else if (timeSinceLastUpdate.Minutes >= ToolkitPointsSettings.minutesBetweenRewards)
-            {
-                TryRewardingViewers();
                 lastUpdateCycle = DateTime.Now;
+                Rewarder.TryRewardingViewers();
             }
-        }
-
-        void TryUpdateChatters()
-        {
-            TwitchAPI.UpdateChatters();
-        }
-
-        void TryRewardingViewers()
-        {
-            ChatterParse.ParseChatterString();
         }
 
         DateTime lastUpdateCycle = DateTime.Now;

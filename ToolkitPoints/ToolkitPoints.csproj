@@ -32,13 +32,16 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.1.2610" />
-    <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" Version="1.1.1" ExcludeAssets="runtime" />
+    <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" Version="1.1.5" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddonMenu.cs" />
     <Compile Include="ChatterParse.cs" />
     <Compile Include="Chatters.cs" />
     <Compile Include="GameComponent_RewardsManager.cs" />
+    <Compile Include="Rewarder.cs" />
     <Compile Include="SimpleJson\SimpleJSON.cs" />
     <Compile Include="SimpleJson\SimpleJSONBinary.cs" />
     <Compile Include="SimpleJson\SimpleJSONUnity.cs" />

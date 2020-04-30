@@ -18,8 +18,7 @@ namespace ToolkitPoints
         static readonly Task<string> downloadChattersTask = new WebClient().DownloadStringTaskAsync(new Uri(GetChatterURL()));
 
         public static string lastChatterDownload = string.Empty;
-
-        public static async void UpdateChatters()
+        public static async Task UpdateChatters()
         {
             lastChatterDownload = await downloadChattersTask;
 

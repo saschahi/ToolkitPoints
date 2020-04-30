@@ -39,17 +39,9 @@ namespace ToolkitPoints
             string pointsBuffer = pointsPerReward.ToString();
             listing.TextFieldNumericLabeled($"{pointsBaseName} Per Reward", ref pointsPerReward, ref pointsBuffer, 0);
 
-            listing.Label(minutes1);
-            listing.Label(minutes2);
-
-            if (listing.ButtonText("Update Chatters"))
+            if (listing.ButtonText("Update Chatters") && Current.Game != null)
             {
-                TwitchAPI.UpdateChatters();
-            }
-
-            if (listing.ButtonText("Parse Chatters"))
-            {
-                ChatterParse.ParseChatterString();
+                GameComponent_RewardsManager.TryRewardingViewers();
             }
 
             listing.End();
@@ -65,9 +57,5 @@ namespace ToolkitPoints
             Scribe_Collections.Look(ref pointLedger, "pointLedger");
             Scribe_Collections.Look(ref lastActive, "lastActive", LookMode.Value, LookMode.Value, ref lastActiveIds, ref lastActiveDateTimes);
         }
-
-        // REMOVE
-        public static string minutes1 = "";
-        public static string minutes2 = "";
     }
 }

@@ -43,7 +43,7 @@ namespace ToolkitPoints
                     }
                     else
                     {
-                        chatters.Add(new Viewer(username));
+                        chatters.Add(ViewerController.CreateViewer(username));
                     }
                 }
             }
