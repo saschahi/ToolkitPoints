@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToolkitCore.Models;
 using ToolkitCore.Utilities;
+using Verse;
 
 namespace ToolkitPoints
 {
@@ -18,7 +19,7 @@ namespace ToolkitPoints
 
             foreach (Viewer viewer in Viewers.All)
             {
-                if (ViewerTracker.MinutesSinceLastActive(viewer) < minutesTillInactive)
+                if (ViewerTracker.ViewerIsBeingTracker(viewer) && ViewerTracker.MinutesSinceLastActive(viewer) < minutesTillInactive)
                 {
                     activeViewers.Add(viewer);
                 }

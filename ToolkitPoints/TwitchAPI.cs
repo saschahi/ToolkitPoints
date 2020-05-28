@@ -21,8 +21,6 @@ namespace ToolkitPoints
         public static async Task UpdateChatters()
         {
             lastChatterDownload = await downloadChattersTask;
-
-            ChatterParse.ParseChatterString();
         }
     }
 }

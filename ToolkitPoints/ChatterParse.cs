@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,43 +13,39 @@ namespace ToolkitPoints
 {
     public class ChatterParse
     {
-        public static List<Viewer> ParseChatterString()
+        public static List<Viewer> FindViewersInChatterWrapper()
         {
-            List<Viewer> chatters = new List<Viewer>();
+            ChatterWrapper chatterWrapper = JsonConvert.DeserializeObject<ChatterWrapper>(TwitchAPI.lastChatterDownload);
 
-            string jsonString = TwitchAPI.lastChatterDownload;
+            List<Viewer> chatterNames = new List<Viewer>();
 
-            var parsed = JSON.Parse(jsonString);
-
-            List<JSONArray> groups = new List<JSONArray>();
-
-            groups.Add(parsed["chatters"]["broadcaster"].AsArray);
-            groups.Add(parsed["chatters"]["moderators"].AsArray);
-            groups.Add(parsed["chatters"]["staff"].AsArray);
-            groups.Add(parsed["chatters"]["admins"].AsArray);
-            groups.Add(parsed["chatters"]["global_mods"].AsArray);
-            groups.Add(parsed["chatters"]["viewers"].AsArray);
-            groups.Add(parsed["chatters"]["vips"].AsArray);
-
-            foreach (JSONArray array in groups)
+            List<string[]> chatterGroups = new List<string[]>()
             {
-                foreach (JSONNode node in array)
+                chatterWrapper.chatters.admins,
+                chatterWrapper.chatters.broadcaster,
+                chatterWrapper.chatters.global_mods,
+                chatterWrapper.chatters.moderators,
+                chatterWrapper.chatters.staff,
+                chatterWrapper.chatters.viewers,
+                chatterWrapper.chatters.vips
+            };
+
+            foreach(string[] list in chatterGroups)
+            {
+                foreach(string username in list)
                 {
-                    string value = node.ToString();
-                    string username = value.Substring(1, value.Length - 2);
-                    
                     if (ViewerController.ViewerExists(username))
                     {
-                        chatters.Add(ViewerController.GetViewer(username));
+                        chatterNames.Add(ViewerController.GetViewer(username));
                     }
                     else
                     {
-                        chatters.Add(ViewerController.CreateViewer(username));
+                        chatterNames.Add(ViewerController.CreateViewer(username));
                     }
                 }
             }
 
-            return chatters;
+            return chatterNames;
         }
     }
 }

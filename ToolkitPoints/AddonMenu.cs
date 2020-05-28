@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToolkitCore.Interfaces;
 using ToolkitCore.Windows;
+using ToolkitPoints.Windows;
 using Verse;
 
 namespace ToolkitPoints
@@ -16,6 +17,18 @@ namespace ToolkitPoints
             new FloatMenuOption("Settings", delegate ()
             {
                 Window_ModSettings window = new Window_ModSettings(LoadedModManager.GetMod<ToolkitPoints>());
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }),
+            new FloatMenuOption("Ledger", delegate ()
+            {
+                ManageLedgerWindow window = new ManageLedgerWindow();
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }),
+            new FloatMenuOption("All Ledgers", delegate ()
+            {
+                LedgersWindow window = new LedgersWindow();
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
             })

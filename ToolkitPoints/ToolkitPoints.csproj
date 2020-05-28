@@ -31,18 +31,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.1.2610" />
-    <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" Version="1.1.5" ExcludeAssets="runtime">
-      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" ExcludeAssets="runtime">
+      <Version>1.1.9</Version>
+    </PackageReference>
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.1.2624" />
+    <PackageReference Include="Lib.Harmony">
+      <Version>2.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveViewers.cs" />
     <Compile Include="AddonMenu.cs" />
     <Compile Include="ChatterParse.cs" />
-    <Compile Include="Chatters.cs" />
+    <Compile Include="ChatterWrapper.cs" />
+    <Compile Include="CommandMethods\AwardPoints.cs" />
+    <Compile Include="CommandMethods\Balance.cs" />
     <Compile Include="GameComponent_RewardsManager.cs" />
+    <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="Ledgers.cs" />
+    <Compile Include="Ledger.cs" />
+    <Compile Include="Points.cs" />
     <Compile Include="Rewarder.cs" />
+    <Compile Include="SaveConfig.cs" />
     <Compile Include="SimpleJson\SimpleJSON.cs" />
     <Compile Include="SimpleJson\SimpleJSONBinary.cs" />
     <Compile Include="SimpleJson\SimpleJSONUnity.cs" />
@@ -50,6 +60,8 @@
     <Compile Include="ToolkitPoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToolkitPointsSettings.cs" />
+    <Compile Include="Windows\LedgersWindow.cs" />
+    <Compile Include="Windows\ManageLedgerWindow.cs" />
   </ItemGroup>
   <ItemGroup>
     <!-- Using ContentWithTargetPath+TargetPath rather than Content+Link because the latter apparently must have the Link path be within OutputDir -->
@@ -61,6 +73,11 @@
     <ContentWithTargetPath Include="Defs\Addon.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>..\Defs\Addon.xml</TargetPath>
+      <SubType>Designer</SubType>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="Defs\Commands\Commands.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\Defs\Commands\Commands.xml</TargetPath>
       <SubType>Designer</SubType>
     </ContentWithTargetPath>
   </ItemGroup>

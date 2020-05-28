@@ -12,7 +12,7 @@ namespace ToolkitPoints
     {
         public ToolkitPoints(ModContentPack content) : base(content)
         {
-
+            GetSettings<ToolkitPointsSettings>();
         }
 
         public override void DoSettingsWindowContents(Rect inRect)
