@@ -32,7 +32,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" ExcludeAssets="runtime">
-      <Version>1.1.9</Version>
+      <Version>1.1.10</Version>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.1.2624" />
     <PackageReference Include="Lib.Harmony">
@@ -46,6 +47,7 @@
     <Compile Include="ChatterWrapper.cs" />
     <Compile Include="CommandMethods\AwardPoints.cs" />
     <Compile Include="CommandMethods\Balance.cs" />
+    <Compile Include="CommandMethods\TakePoints.cs" />
     <Compile Include="GameComponent_RewardsManager.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="Ledgers.cs" />
