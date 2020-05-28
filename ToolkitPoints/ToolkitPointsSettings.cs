@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using ToolkitPoints.Windows;
 using UnityEngine;
 using Verse;
@@ -28,81 +24,102 @@ namespace ToolkitPoints
 
         public void DoWindowContents(Rect inRect)
         {
+            if (Event.current.type == EventType.Layout)
+            {
+                return;
+            }
+
             GameFont original = Text.Font;
             Text.Font = GameFont.Medium;
 
-            Rect basePointSettings = new Rect(0, 0, inRect.width - 150f, inRect.height - 200);
+            // Button texts
+            string rewardButtonText = "Reward Viewers";
+            string activeLedgerText = "Active Ledger";
+            string allLedgersText = "All Ledgers";
 
-            GUI.BeginGroup(basePointSettings);
+            // Rect regions
+            float estBtnWidth = Mathf.Max(
+                                    Text.CalcSize(rewardButtonText).x,
+                                    Text.CalcSize(activeLedgerText).x,
+                                    Text.CalcSize(allLedgersText).x
+                                )
+                                + 24f;
 
-            Rect pointsBase = new Rect(0, 0, 200, 24);
+            Rect buttonRegion = new Rect(inRect.width - estBtnWidth, 0f, estBtnWidth, inRect.height);
+            Rect settingsRegion = new Rect(0f, 0f, inRect.width - buttonRegion.width - 23f, inRect.height);
 
-            Widgets.Label(pointsBase, "Points Base Name:");
+            GUI.BeginGroup(inRect);
 
-            pointsBase.x += pointsBase.width + WidgetRow.LabelGap;
+            Listing_Standard listing = new Listing_Standard(GameFont.Medium);
 
-            pointsBaseName = Widgets.TextField(pointsBase, pointsBaseName);
+            listing.Begin(settingsRegion);
+            DrawSettingsPanel(listing);
+            listing.End();
 
-            Rect awardViewers = new Rect(0, pointsBase.y + pointsBase.height, 200f, 24f);
+            float btnLineHeight = inRect.height * 0.9f;
+            Widgets.DrawLineVertical(
+                settingsRegion.x + settingsRegion.width + 12f,
+                0f,
+                btnLineHeight
+            );
 
-            Widgets.Label(awardViewers, $"Reward Viewers with {pointsBaseName}?");
+            listing.Begin(buttonRegion);
 
-            awardViewers.x += awardViewers.width + WidgetRow.LabelGap;
-
-            Widgets.Checkbox(awardViewers.position, ref rewardPoints);
-
-            Rect minutesBetween = new Rect(0, awardViewers.y + awardViewers.height, 200f, 24f);
-
-            Widgets.Label(minutesBetween, $"Minutes Between {pointsBaseName} Rewards");
-
-            minutesBetween.x += minutesBetween.width + WidgetRow.LabelGap;
-
-            string minutesBuffer = minutesBetweenRewards.ToString();
-            Widgets.TextFieldNumeric(minutesBetween, ref minutesBetweenRewards, ref minutesBuffer);
-
-            Rect pointsPer = new Rect(0, minutesBetween.y + minutesBetween.height, 200f, 24f);
-
-            Widgets.Label(pointsPer, $"{pointsBaseName} Per Reward");
-
-            pointsPer.x += pointsPer.width + WidgetRow.LabelGap;
-
-            string pointsPerBuffer = pointsPerReward.ToString();
-            Widgets.TextFieldNumeric(pointsPer, ref pointsPerReward, ref pointsPerBuffer);
-
-            GUI.EndGroup();
-
-            Rect windowButtons = new Rect(basePointSettings.width, 0, 150f, inRect.height);
-
-            GUI.BeginGroup(windowButtons);
-
-            Rect updateAndReward = new Rect(0, 0, 150f, 24f);
-
-            if (Widgets.ButtonText(updateAndReward, "Reward Viewers"))
+            if (listing.ButtonText(rewardButtonText))
             {
                 Rewarder.TryRewardingViewers();
             }
 
-            Rect activeLedger = new Rect(0, updateAndReward.y + updateAndReward.height, 150f, 24f);
-
-            if (Widgets.ButtonText(activeLedger, "Active Ledger"))
+            if (listing.ButtonText(activeLedgerText))
             {
                 ManageLedgerWindow window = new ManageLedgerWindow();
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
             }
 
-            Rect allLedgers = new Rect(0, activeLedger.y + activeLedger.height, 150f, 24f);
-
-            if (Widgets.ButtonText(allLedgers, "All Ledgers"))
+            if (listing.ButtonText(allLedgersText))
             {
                 LedgersWindow window = new LedgersWindow();
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
             }
 
+            listing.End();
             GUI.EndGroup();
 
             Text.Font = original;
+        }
+
+        private void DrawSettingsPanel(Listing listing)
+        {
+            (Rect nameLabel, Rect nameField) = listing.GetRect(Text.LineHeight).ToForm();
+            Widgets.Label(nameLabel, "Points Base Name:");
+            pointsBaseName = Widgets.TextField(nameField, pointsBaseName);
+
+            if (SettingsHelper.DrawClearButton(nameField))
+            {
+                pointsBaseName = "";
+            }
+
+            listing.Gap(Text.LineHeight);
+            (Rect awardLabel, Rect awardField) = listing.GetRect(Text.LineHeight).ToForm();
+            Widgets.Label(awardLabel, $"Reward viewers with {pointsBaseName}?");
+            Widgets.Checkbox(awardField.x + awardField.width - 24f, awardField.y, ref rewardPoints);
+
+            if (!rewardPoints)
+            {
+                return;
+            }
+
+            string minutesBuffer = minutesBetweenRewards.ToString();
+            (Rect minutesLabel, Rect minutesField) = listing.GetRect(Text.LineHeight).ToForm();
+            Widgets.Label(minutesLabel, $"Minutes Between {pointsBaseName} Rewards");
+            Widgets.TextFieldNumeric(minutesField, ref minutesBetweenRewards, ref minutesBuffer);
+
+            string pointsBuffer = pointsPerReward.ToString();
+            (Rect pointsLabel, Rect pointsField) = listing.GetRect(Text.LineHeight).ToForm();
+            Widgets.Label(pointsLabel, $"{pointsBaseName} Per Reward");
+            Widgets.TextFieldNumeric(pointsField, ref pointsPerReward, ref pointsBuffer);
         }
 
         public override void ExposeData()
@@ -114,7 +131,14 @@ namespace ToolkitPoints
             Scribe_Values.Look(ref currentActiveLedgerId, "currentActiveLedgerId", -1);
 
             Scribe_Collections.Look(ref pointLedger, "pointLedger");
-            Scribe_Collections.Look(ref lastActive, "lastActive", LookMode.Value, LookMode.Value, ref lastActiveIds, ref lastActiveDateTimes);
+            Scribe_Collections.Look(
+                ref lastActive,
+                "lastActive",
+                LookMode.Value,
+                LookMode.Value,
+                ref lastActiveIds,
+                ref lastActiveDateTimes
+            );
         }
     }
 }
