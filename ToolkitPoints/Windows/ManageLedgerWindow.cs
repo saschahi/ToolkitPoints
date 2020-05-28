@@ -26,7 +26,7 @@ namespace ToolkitPoints.Windows
                 activeLedger = ledger;
             }
 
-            if (activeLedger.Points != null)
+            if (activeLedger.Points != null && activeLedger.Points.Count > 0)
             {
                 selectedViewerName = activeLedger.Points.FirstOrDefault().Key;
                 selectedViewerPoints = activeLedger.Points[selectedViewerName];
