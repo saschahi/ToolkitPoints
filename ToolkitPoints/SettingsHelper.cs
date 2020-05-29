@@ -21,6 +21,22 @@ namespace ToolkitPoints
             GUI.FocusControl(null);
             return true;
         }
+        
+        public static bool DrawDoneButton(Rect canvas)
+        {
+            Rect region = new Rect(canvas.x + canvas.width - 16f, canvas.y, 16f, canvas.height);
+            Widgets.ButtonText(region, "✔", false);
+
+            bool clicked = Mouse.IsOver(region) && Event.current.type == EventType.Used && Event.current.clickCount > 0;
+
+            if (!clicked)
+            {
+                return false;
+            }
+
+            GUI.FocusControl(null);
+            return true;
+        }
 
         public static bool WasRightClicked(this Rect region)
         {
