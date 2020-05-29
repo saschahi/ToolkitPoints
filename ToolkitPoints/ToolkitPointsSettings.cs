@@ -96,7 +96,7 @@ namespace ToolkitPoints
             Widgets.Label(nameLabel, "Points Base Name:");
             pointsBaseName = Widgets.TextField(nameField, pointsBaseName);
 
-            if (SettingsHelper.DrawClearButton(nameField))
+            if (!pointsBaseName.NullOrEmpty() && SettingsHelper.DrawClearButton(nameField))
             {
                 pointsBaseName = "";
             }

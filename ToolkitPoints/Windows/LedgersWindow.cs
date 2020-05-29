@@ -169,7 +169,7 @@ namespace ToolkitPoints.Windows
             Widgets.Label(nameLabel, "Ledger name");
             selectedLedger.Name = Widgets.TextField(nameField, selectedLedger.Name);
 
-            if (SettingsHelper.DrawClearButton(nameField))
+            if (!selectedLedger.Name.NullOrEmpty() && SettingsHelper.DrawClearButton(nameField))
             {
                 selectedLedger.Name = selectedLedger.Id.ToString();
             }
