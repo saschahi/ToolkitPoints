@@ -155,7 +155,7 @@ namespace ToolkitPoints.Windows
 
             viewerSearch = Widgets.TextField(searchBox, viewerSearch);
 
-            if (SettingsHelper.DrawDoneButton(searchBox))
+            if (SettingsHelper.DrawClearButton(searchBox))
             {
                 viewerSearch = "";
             }
