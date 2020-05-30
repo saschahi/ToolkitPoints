@@ -6,16 +6,8 @@ using Verse;
 
 namespace ToolkitPoints.Windows
 {
-    [StaticConstructorOnStartup]
     public class LedgersWindow : Window
     {
-        private static readonly Texture2D LedgerStateIcon;
-
-        static LedgersWindow()
-        {
-            LedgerStateIcon = ContentFinder<Texture2D>.Get("UI/Icons/LedgerState");
-        }
-
         public LedgersWindow()
         {
             this.doCloseButton = true;
@@ -101,20 +93,19 @@ namespace ToolkitPoints.Windows
                     Widgets.DrawLightHighlight(ledgerRect);
                 }
 
-                Widgets.DrawHighlightIfMouseover(iconRect);
                 Widgets.DrawHighlightIfMouseover(ledgerRect);
 
 
                 if (isActiveLedger)
                 {
-                    LedgerStateIcon.DrawColored(iconRect, Color.yellow);
+                    GUI.DrawTexture(iconRect, Widgets.CheckboxOnTex);
                     TooltipHandler.TipRegion(iconRect, $"{ledger.Name} is currently active");
                 }
                 else
                 {
                     if (Mouse.IsOver(iconRect))
                     {
-                        LedgerStateIcon.DrawColored(iconRect, Color.grey);
+                        Widgets.CheckboxOnTex.DrawColored(iconRect, new Color(1f, 1f, 1f, 0.38f));
                     }
 
                     TooltipHandler.TipRegion(iconRect, $@"Set ""{ledger.Name}"" as the current active ledger");
