@@ -11,7 +11,7 @@ namespace ToolkitPoints
             Rect region = new Rect(canvas.x + canvas.width - 16f, canvas.y, 16f, canvas.height);
             Widgets.ButtonText(region, "×", false);
 
-            bool clicked = Mouse.IsOver(region) && Event.current.type == EventType.Used && Event.current.clickCount > 0;
+            bool clicked = Mouse.IsOver(region) && Event.current.type == EventType.Used && Input.GetMouseButtonDown(0);
 
             if (!clicked)
             {
@@ -27,7 +27,7 @@ namespace ToolkitPoints
             Rect region = new Rect(canvas.x + canvas.width - 16f, canvas.y, 16f, canvas.height);
             Widgets.ButtonText(region, "✔", false);
 
-            bool clicked = Mouse.IsOver(region) && Event.current.type == EventType.Used && Event.current.clickCount > 0;
+            bool clicked = Mouse.IsOver(region) && Event.current.type == EventType.Used && Input.GetMouseButtonDown(0);
 
             if (!clicked)
             {
