@@ -1,4 +1,4 @@
-﻿using Steamworks;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +63,7 @@ namespace ToolkitPoints.Windows
         {
             if (viewerSearch.NullOrEmpty())
             {
-                return null;
+                return new List<string>();
             }
 
             return Viewers.All
