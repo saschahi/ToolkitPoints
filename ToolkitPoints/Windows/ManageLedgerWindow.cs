@@ -164,7 +164,9 @@ namespace ToolkitPoints.Windows
 
             foreach (string username in searchResults)
             {
-                if (Widgets.ButtonText(searchResultButtons, username))
+                Widgets.DrawAtlas(searchResultButtons, TexUI.FloatMenuOptionBG);
+                
+                if (Widgets.ButtonText(searchResultButtons, $" {username}", false))
                 {
                     UpdateSelectedViewer(username);
                 }
