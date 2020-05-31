@@ -71,7 +71,7 @@ namespace ToolkitPoints.Windows
                     v => v.Username.Equals(viewerSearch, StringComparison.InvariantCultureIgnoreCase)
                          || v.Username.ToUpper().Contains(viewerSearch.ToUpper())
                 )
-                // .Take(5)
+                .Take(3)
                 .Select(v => v.Username)
                 .ToList();
         }
