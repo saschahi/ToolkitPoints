@@ -1,4 +1,4 @@
-using Steamworks;
+﻿using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -158,6 +158,16 @@ namespace ToolkitPoints.Windows
             if (!viewerSearch.NullOrEmpty() && SettingsHelper.DrawClearButton(searchBox))
             {
                 viewerSearch = "";
+            }
+
+            if (viewerSearch.NullOrEmpty())
+            {
+                lastCachedSearch = "";
+                
+                if(searchResults.Count > 0)
+                {
+                    searchResults = new List<string>();
+                }
             }
 
             Rect searchResultButtons = new Rect(204f, searchBox.y + searchBox.height, 200f, 24f);
