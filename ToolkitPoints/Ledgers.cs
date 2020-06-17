@@ -27,6 +27,8 @@ namespace ToolkitPoints
             }
             else
             {
+                Log.Message("Current ledger was null. trying to find default");
+
                 if (Instance.All.Count == 0)
                 {
                     Ledger newLedger = Ledger.NewLedger();

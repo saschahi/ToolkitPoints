@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" ExcludeAssets="runtime">
-      <Version>1.1.10</Version>
+      <Version>1.2.0</Version>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.1.2624" />
@@ -50,11 +50,13 @@
     <Compile Include="CommandMethods\TakePoints.cs" />
     <Compile Include="GameComponent_RewardsManager.cs" />
     <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="LedgerRecord.cs" />
     <Compile Include="Ledgers.cs" />
     <Compile Include="Ledger.cs" />
     <Compile Include="Points.cs" />
     <Compile Include="Rewarder.cs" />
     <Compile Include="SaveConfig.cs" />
+    <Compile Include="SettingsHelper.cs" />
     <Compile Include="SimpleJson\SimpleJSON.cs" />
     <Compile Include="SimpleJson\SimpleJSONBinary.cs" />
     <Compile Include="SimpleJson\SimpleJSONUnity.cs" />

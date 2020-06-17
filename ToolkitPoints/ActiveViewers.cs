@@ -17,11 +17,13 @@ namespace ToolkitPoints
         {
             List<Viewer> activeViewers = new List<Viewer>();
 
-            foreach (Viewer viewer in Viewers.All)
+            foreach (Viewer viewer in ViewerList.Instance.All)
             {
-                if (ViewerTracker.ViewerIsBeingTracker(viewer) && ViewerTracker.MinutesSinceLastActive(viewer) < minutesTillInactive)
+                int minutesSinceLastMessage = DateTime.Now.Subtract(viewer.LastSeen()).Minutes;
+                if (minutesSinceLastMessage <= 30)
                 {
                     activeViewers.Add(viewer);
+                    Log.Message($"Viewer last seen {minutesSinceLastMessage} minutes ago added to active viewer list.");
                 }
             }
 

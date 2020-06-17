@@ -6,7 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ToolkitCore.Controllers;
+using ToolkitCore.Models;
 using Verse;
+using static ToolkitCore.Models.Services;
 
 namespace ToolkitPoints
 {
@@ -78,10 +81,45 @@ namespace ToolkitPoints
             Ledgers.Instance.All = Ledgers.Instance.All.Where((x) => x != this).ToList();
         }
 
+        public LedgerRecord GetLedgerRecord(string username, Service service)
+        {
+            Viewer viewer;
+
+            if (ViewerController.ViewerExists(service, username))
+            {
+                viewer = ViewerController.GetViewer(service, username);
+            }
+            else
+            {
+                viewer = ViewerController.CreateViewer(service, username, 0);
+            }
+
+            LedgerRecord ledgerRecord;
+
+            ledgerRecord = LedgerRecords.Find((lr) => lr.Username == username && lr.Service == service);
+
+            if (ledgerRecord == null)
+            {
+                ledgerRecord = new LedgerRecord()
+                {
+                    Username = username,
+                    Service = service,
+                    PointBalance = 0
+                };
+            }
+
+            return ledgerRecord;
+        }
+
+        public int GetViewerBalance(string username, Service service)
+        {
+            return GetLedgerRecord(username, service).PointBalance;
+        }
+
         public string Name { get; set; }
 
         public int Id { get; set; }
 
-        public Dictionary<string, int> Points { get; set; }
+        public List<LedgerRecord> LedgerRecords { get; set; }
     }
 }

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolkitCore;
+using ToolkitCore.Interfaces;
 using ToolkitCore.Models;
+using ToolkitCore.Utilities;
 using TwitchLib.Client.Interfaces;
 
 namespace ToolkitPoints.CommandMethods
@@ -16,9 +18,9 @@ namespace ToolkitPoints.CommandMethods
 
         }
 
-        public override void Execute(ITwitchCommand twitchCommand)
+        public override void Execute(ICommand command)
         {
-            TwitchWrapper.SendChatMessage($"@{twitchCommand.Username} you have {Points.Balance(twitchCommand.Username)} {ToolkitPointsSettings.pointsBaseName}");
+            MessageSender.SendMessage($"@{command.Username()} you have {Points.Balance(command.Username(), command.Service())} {ToolkitPointsSettings.pointsBaseName}", command.Service());
         }
     }
 }

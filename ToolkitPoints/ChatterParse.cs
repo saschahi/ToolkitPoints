@@ -8,6 +8,7 @@ using ToolkitCore.Controllers;
 using ToolkitCore.Models;
 using ToolkitPoints.SimpleJson;
 using Verse;
+using static ToolkitCore.Models.Services;
 
 namespace ToolkitPoints
 {
@@ -34,13 +35,13 @@ namespace ToolkitPoints
             {
                 foreach(string username in list)
                 {
-                    if (ViewerController.ViewerExists(username))
+                    if (ViewerController.ViewerExists(Service.Twitch, username))
                     {
-                        chatterNames.Add(ViewerController.GetViewer(username));
+                        chatterNames.Add(ViewerController.GetViewer(Service.Twitch, username));
                     }
                     else
                     {
-                        chatterNames.Add(ViewerController.CreateViewer(username));
+                        chatterNames.Add(ViewerController.CreateViewer(Service.Twitch, username, 0));
                     }
                 }
             }

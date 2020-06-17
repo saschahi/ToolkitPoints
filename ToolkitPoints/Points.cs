@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Verse;
+using static ToolkitCore.Models.Services;
 
 namespace ToolkitPoints
 {
     public static class Points
     {
-        public static void RemovePoints(string username, int points)
+        public static void RemovePoints(string username, Service service, int points)
         {
             if (points < 1)
             {
@@ -19,20 +20,12 @@ namespace ToolkitPoints
 
             Ledger ledger = Ledgers.ActiveLedger();
 
-            if (!ledger.Points.ContainsKey(username))
-            {
-                ledger.Points.Add(username, 0);
-            }
+            LedgerRecord ledgerRecord = ledger.GetLedgerRecord(username, service);
 
-            ledger.Points[username] -= points;
-
-            if (ledger.Points[username] < 0)
-            {
-                ledger.Points[username] = 0;
-            }
+            ledgerRecord.PointBalance -= points;
         }
 
-        public static void AddPoints(string username, int points)
+        public static void AddPoints(string username, Service service, int points)
         {
             if (points < 1)
             {
@@ -42,24 +35,14 @@ namespace ToolkitPoints
 
             Ledger ledger = Ledgers.ActiveLedger();
 
-            if (!ledger.Points.ContainsKey(username))
-            {
-                ledger.Points.Add(username, 0);
-            }
+            LedgerRecord ledgerRecord = ledger.GetLedgerRecord(username, service);
 
-            ledger.Points[username] += points;
+            ledgerRecord.PointBalance += points;
         }
 
-        public static int Balance(string username)
+        public static int Balance(string username, Service service)
         {
-            Ledger ledger = Ledgers.ActiveLedger();
-
-            if (!ledger.Points.ContainsKey(username))
-            {
-                ledger.Points.Add(username, 0);
-            }
-
-            return ledger.Points[username];
+            return Ledgers.ActiveLedger().GetViewerBalance(username, service);
         }
     }
 }

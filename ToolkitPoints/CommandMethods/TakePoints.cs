@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolkitCore;
+using ToolkitCore.Interfaces;
 using ToolkitCore.Models;
+using ToolkitCore.Utilities;
 using TwitchLib.Client.Interfaces;
 
 namespace ToolkitPoints.CommandMethods
@@ -16,13 +18,13 @@ namespace ToolkitPoints.CommandMethods
 
         }
 
-        public override void Execute(ITwitchCommand twitchCommand)
+        public override void Execute(ICommand command)
         {
-            List<string> args = twitchCommand.ArgumentsAsList;
+            List<string> args = command.Parameters();
 
             if (args.Count < 2)
             {
-                TwitchWrapper.SendChatMessage($"@{twitchCommand.Username} to take {ToolkitPointsSettings.pointsBaseName} make sure to include a username then an amount.");
+                TwitchWrapper.SendChatMessage($"@{command.Username()} to take {ToolkitPointsSettings.pointsBaseName} make sure to include a username then an amount.");
                 return;
             }
 
@@ -30,13 +32,13 @@ namespace ToolkitPoints.CommandMethods
 
             if (!int.TryParse(args[1], out int points))
             {
-                TwitchWrapper.SendChatMessage($"@{twitchCommand.Username} to take {ToolkitPointsSettings.pointsBaseName} make sure to include the amount after the username.");
+                TwitchWrapper.SendChatMessage($"@{command.Username()} to take {ToolkitPointsSettings.pointsBaseName} make sure to include the amount after the username.");
                 return;
             }
 
-            Points.RemovePoints(username, points);
+            Points.RemovePoints(username, command.Service(), points);
 
-            TwitchWrapper.SendChatMessage($"@{username} you have had {points} {ToolkitPointsSettings.pointsBaseName} taken from you by @{twitchCommand.Username}");
+            MessageSender.SendMessage($"@{username} you have had {points} {ToolkitPointsSettings.pointsBaseName} taken from you by @{command.Username()}", command.Service());
         }
     }
 }

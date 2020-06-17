@@ -48,14 +48,9 @@ namespace ToolkitPoints
 
             foreach(Viewer viewer in viewers)
             {
-                if (activeLedger.Points.ContainsKey(viewer.Username))
-                {
-                    activeLedger.Points[viewer.Username] += ToolkitPointsSettings.pointsPerReward;
-                }
-                else
-                {
-                    activeLedger.Points.Add(viewer.Username, ToolkitPointsSettings.pointsPerReward);
-                }
+                LedgerRecord ledgerRecord = activeLedger.GetLedgerRecord(viewer.Username, viewer.Service);
+
+                ledgerRecord.PointBalance += ToolkitPointsSettings.pointsPerReward;
             }
         }
     }

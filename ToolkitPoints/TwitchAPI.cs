@@ -13,7 +13,7 @@ namespace ToolkitPoints
 {
     public static class TwitchAPI
     {
-        static string GetChatterURL() => $"http://tmi.twitch.tv/group/user/{ToolkitCoreSettings.channel_username}/chatters";
+        static string GetChatterURL() => $"http://tmi.twitch.tv/group/user/{ToolkitCoreSettings.twitchChannelUsername}/chatters";
 
         static readonly Task<string> downloadChattersTask = new WebClient().DownloadStringTaskAsync(new Uri(GetChatterURL()));
 
