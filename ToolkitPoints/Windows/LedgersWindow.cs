@@ -203,7 +203,7 @@ namespace ToolkitPoints.Windows
 
             if (listing.ButtonText(resetText))
             {
-                selectedLedger.Points = new Dictionary<string, int>();
+                selectedLedger.LedgerRecords = new List<LedgerRecord>();
             }
             
             listing.End();
