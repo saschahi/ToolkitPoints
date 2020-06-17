@@ -12,6 +12,10 @@ using Verse;
 
 namespace ToolkitPoints.Windows
 {
+    public enum SortModes { Ascending, Descending }
+
+    public enum Sorters { Name, Points }
+
     public class ManageLedgerWindow : Window
     {
         public ManageLedgerWindow(Ledger ledger = null)
@@ -33,11 +37,47 @@ namespace ToolkitPoints.Windows
             }
         }
 
-        public override void DoWindowContents(Rect inRect)
+        public override void WindowUpdate()
         {
-            UpdateSearchCachedResults();
+            base.WindowUpdate();
             UpdateSelectedViewerProperties();
 
+            if (lastCachedSearch.Equals(viewerSearch))
+            {
+                return;
+            }
+
+            if (Time.time % 2 < 1)
+            {
+                Notify_SearchRequested();
+            }
+        }
+
+        private void Notify_SearchRequested()
+        {
+            searchResults = GetSearchResults();
+            lastCachedSearch = viewerSearch;
+        }
+
+        private List<string> GetSearchResults()
+        {
+            if (viewerSearch.NullOrEmpty())
+            {
+                return new List<string>();
+            }
+
+            return Viewers.All
+                .Where(
+                    v => v.Username.Equals(viewerSearch, StringComparison.InvariantCultureIgnoreCase)
+                         || v.Username.ToUpper().Contains(viewerSearch.ToUpper())
+                )
+                .Take(3)
+                .Select(v => v.Username)
+                .ToList();
+        }
+
+        public override void DoWindowContents(Rect inRect)
+        {
             GameFont original = Text.Font;
             Text.Font = GameFont.Small;
 
@@ -74,15 +114,12 @@ namespace ToolkitPoints.Windows
                 Widgets.Label(rewardPoints, $"Give Viewer {ToolkitPointsSettings.pointsBaseName}:");
 
                 rewardPoints.x += rewardPoints.width + WidgetRow.LabelGap;
-                rewardPoints.width = 100f;
+                rewardPoints.width = 196f + WidgetRow.LabelGap;
 
                 string pointsToRewardViewerBuffer = pointsToRewardViewer.ToString();
                 Widgets.TextFieldNumeric(rewardPoints, ref pointsToRewardViewer, ref pointsToRewardViewerBuffer);
 
-                rewardPoints.x += rewardPoints.width + WidgetRow.LabelGap;
-                rewardPoints.width = 96f;
-
-                if (Widgets.ButtonText(rewardPoints, "Reward"))
+                if (SettingsHelper.DrawDoneButton(rewardPoints))
                 {
                     selectedViewerPoints += pointsToRewardViewer;
                 }
@@ -93,15 +130,12 @@ namespace ToolkitPoints.Windows
                 Widgets.Label(takePoints, $"Take Viewer {ToolkitPointsSettings.pointsBaseName}:");
 
                 takePoints.x += takePoints.width + WidgetRow.LabelGap;
-                takePoints.width = 100f;
+                takePoints.width = 196f + WidgetRow.LabelGap;
 
                 string pointsToTakeFromViewerBuffer = pointsToTakeFromViewer.ToString();
                 Widgets.TextFieldNumeric(takePoints, ref pointsToTakeFromViewer, ref pointsToTakeFromViewerBuffer);
 
-                takePoints.x += takePoints.width + WidgetRow.LabelGap;
-                takePoints.width = 96f;
-
-                if (Widgets.ButtonText(takePoints, "Take"))
+                if (SettingsHelper.DrawDoneButton(takePoints))
                 {
                     selectedViewerPoints -= pointsToTakeFromViewer;
                 }
@@ -121,19 +155,28 @@ namespace ToolkitPoints.Windows
 
             viewerSearch = Widgets.TextField(searchBox, viewerSearch);
 
-            searchBox.x += searchBox.width + WidgetRow.LabelGap;
-            searchBox.width = 25f;
-
-            if (Widgets.ButtonText(searchBox, " X "))
+            if (!viewerSearch.NullOrEmpty() && SettingsHelper.DrawClearButton(searchBox))
             {
                 viewerSearch = "";
+            }
+
+            if (viewerSearch.NullOrEmpty())
+            {
+                lastCachedSearch = "";
+                
+                if(searchResults.Count > 0)
+                {
+                    searchResults = new List<string>();
+                }
             }
 
             Rect searchResultButtons = new Rect(204f, searchBox.y + searchBox.height, 200f, 24f);
 
             foreach (string username in searchResults)
             {
-                if (Widgets.ButtonText(searchResultButtons, username))
+                Widgets.DrawAtlas(searchResultButtons, TexUI.FloatMenuOptionBG);
+                
+                if (Widgets.ButtonText(searchResultButtons, $" {username}", false))
                 {
                     UpdateSelectedViewer(username);
                 }
@@ -178,7 +221,9 @@ namespace ToolkitPoints.Windows
 
             Viewer viewer = ViewerController.GetViewer(keyValuePair.Key);
 
-            string viewerLabel = selectedViewerName == keyValuePair.Key ? TCText.ColoredText(viewer.DisplayName, ColorLibrary.Gold) : viewer.DisplayName;
+            string viewerLabel = selectedViewerName == keyValuePair.Key
+                ? TCText.ColoredText(viewer.DisplayName, ColorLibrary.Gold)
+                : viewer.DisplayName;
 
             if (Widgets.ButtonText(label, viewerLabel, false))
             {
@@ -190,30 +235,6 @@ namespace ToolkitPoints.Windows
             GUI.EndGroup();
         }
 
-        private void UpdateSearchCachedResults()
-        {
-            if (viewerSearch == lastCachedSearch)
-            {
-                return;
-            }
-            else
-            {
-                lastCachedSearch = viewerSearch;
-            }
-
-            if (viewerSearch == "")
-            {
-                searchResults = new List<string>();
-                return;
-            }
-
-            List<Viewer> viewersFromSearch = Viewers.All.Where((viewer) =>
-                    viewer.Username.Equals(viewerSearch, StringComparison.InvariantCultureIgnoreCase) ||
-                    viewer.Username.ToUpper().Contains(viewerSearch.ToUpper())
-                ).Take(3).ToList();
-
-            searchResults = viewersFromSearch.Select((viewer) => viewer.Username).ToList();
-        }
 
         private void UpdateSelectedViewer(string username)
         {
@@ -235,7 +256,7 @@ namespace ToolkitPoints.Windows
             lastCachedSearch = "";
             searchResults = new List<string>();
         }
-        
+
         private void UpdateSelectedViewerProperties()
         {
             if (selectedViewerPoints != selectedViewerPointsCached)
@@ -267,6 +288,9 @@ namespace ToolkitPoints.Windows
 
         int pointsToRewardViewer = 100;
         int pointsToTakeFromViewer = 0;
+
+        private SortModes sortMode;
+        private Sorters sorter;
 
         List<string> searchResults = new List<string>();
     }
