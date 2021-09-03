@@ -13,7 +13,7 @@
     <defName>AwardPoints</defName>
     <commandText>awardpoints</commandText>
     <enabled>true</enabled>
-    <commandClass>ToolkitPoints.CommandMethods.AwardPoints</commandClass>
+    <commandClass>ToolkitPoints.CommandMethods.RewardPoints</commandClass>
     <requiresMod>true</requiresMod>
     <requiresBroadcaster>false</requiresBroadcaster>
   </ToolkitCore.Models.ToolkitChatCommand>

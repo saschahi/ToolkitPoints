@@ -31,13 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="HodlHodl.Rimworld.Toolkit.Core" ExcludeAssets="runtime">
-      <Version>1.2.0</Version>
-      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.1.2624" />
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.3.3102" />
     <PackageReference Include="Lib.Harmony">
-      <Version>2.0.1</Version>
+      <Version>2.1.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -45,7 +41,7 @@
     <Compile Include="AddonMenu.cs" />
     <Compile Include="ChatterParse.cs" />
     <Compile Include="ChatterWrapper.cs" />
-    <Compile Include="CommandMethods\AwardPoints.cs" />
+    <Compile Include="CommandMethods\RewardPoints.cs" />
     <Compile Include="CommandMethods\Balance.cs" />
     <Compile Include="CommandMethods\TakePoints.cs" />
     <Compile Include="GameComponent_RewardsManager.cs" />
@@ -53,6 +49,7 @@
     <Compile Include="LedgerRecord.cs" />
     <Compile Include="Ledgers.cs" />
     <Compile Include="Ledger.cs" />
+    <Compile Include="Permissions.cs" />
     <Compile Include="Points.cs" />
     <Compile Include="Rewarder.cs" />
     <Compile Include="SaveConfig.cs" />
@@ -84,6 +81,33 @@
       <TargetPath>..\Defs\Commands\Commands.xml</TargetPath>
       <SubType>Designer</SubType>
     </ContentWithTargetPath>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ToolkitCore">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\ToolkitCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="TwitchLib.Client">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Client.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="TwitchLib.Client.Enums">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Client.Enums.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="TwitchLib.Client.Models">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Client.Models.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="TwitchLib.Communication">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Communication.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

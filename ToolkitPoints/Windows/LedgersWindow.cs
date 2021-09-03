@@ -70,11 +70,14 @@ namespace ToolkitPoints.Windows
                 Ledger _ = Ledger.NewLedger();
             }
 
+            Rect viewRect = new Rect(0f, 0f, ledgerMenuCanvas.width - 16f, Text.LineHeight * 40f);
             Listing_Standard listing = new Listing_Standard(GameFont.Small);
             Widgets.DrawMenuSection(ledgerMenuRegion);
 
             GUI.BeginGroup(ledgerMenuRegion);
-            listing.BeginScrollView(ledgerMenuCanvas, ref scrollPosition, ref ledgerMenuViewport);
+            //listing.BeginScrollView(ledgerMenuCanvas, ref scrollPosition, ref ledgerMenuViewport);
+            Widgets.BeginScrollView(ledgerMenuCanvas, ref scrollPosition, viewRect);
+            listing.Begin(viewRect);
 
             foreach (Ledger ledger in Ledgers.Instance.All)
             {
@@ -121,7 +124,9 @@ namespace ToolkitPoints.Windows
             }
 
             GUI.EndGroup();
-            listing.EndScrollView(ref ledgerMenuViewport);
+            //listing.EndScrollView(ref ledgerMenuViewport);
+            listing.End();
+            Widgets.EndScrollView();
 
 
             GUI.BeginGroup(ledgerSettingsRegion);

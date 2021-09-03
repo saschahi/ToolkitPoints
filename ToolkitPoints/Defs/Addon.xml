@@ -4,5 +4,6 @@
     <defName>ToolkitPoints</defName>
     <label>ToolkitPoints</label>
     <menuClass>ToolkitPoints.AddonMenu</menuClass>
+    <permissionsClass>ToolkitPoints.ToolkitPointsPermissions</permissionsClass>
   </ToolkitCore.Models.ToolkitAddon>
 </Defs>

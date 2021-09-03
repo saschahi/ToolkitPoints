@@ -12,9 +12,9 @@ using Verse;
 
 namespace ToolkitPoints.CommandMethods
 {
-    public class AwardPoints : CommandMethod
+    public class RewardPoints : CommandMethod
     {
-        public AwardPoints(ToolkitChatCommand command) : base(command)
+        public RewardPoints(ToolkitChatCommand command) : base(command)
         {
 
         }

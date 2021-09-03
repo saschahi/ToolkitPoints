@@ -9,6 +9,7 @@ using ToolkitCore.Models;
 using ToolkitCore.Utilities;
 using UnityEngine;
 using Verse;
+using static ToolkitCore.Models.Services;
 
 namespace ToolkitPoints.Windows
 {
@@ -30,10 +31,11 @@ namespace ToolkitPoints.Windows
                 activeLedger = ledger;
             }
 
-            if (activeLedger.Points != null && activeLedger.Points.Count > 0)
+            if (activeLedger.LedgerRecords != null && activeLedger.LedgerRecords.Count > 0)
             {
-                selectedViewerName = activeLedger.Points.FirstOrDefault().Key;
-                selectedViewerPoints = activeLedger.Points[selectedViewerName];
+                LedgerRecord selectedViewer = activeLedger.LedgerRecords.FirstOrDefault();
+                selectedViewerName = selectedViewer.Username;
+                selectedViewerPoints = selectedViewer.PointBalance;
             }
         }
 
@@ -66,7 +68,7 @@ namespace ToolkitPoints.Windows
                 return new List<string>();
             }
 
-            return Viewers.All
+            return ViewerList.Instance.All
                 .Where(
                     v => v.Username.Equals(viewerSearch, StringComparison.InvariantCultureIgnoreCase)
                          || v.Username.ToUpper().Contains(viewerSearch.ToUpper())
@@ -184,8 +186,8 @@ namespace ToolkitPoints.Windows
                 searchResultButtons.y += searchResultButtons.height;
             }
 
-            bool activeLedgerPointsNull = activeLedger.Points == null;
-            int pointKeys = activeLedgerPointsNull ? 0 : activeLedger.Points.Count;
+            bool ledgerRecordsNull = activeLedger.LedgerRecords == null;
+            int pointKeys = ledgerRecordsNull ? 0 : activeLedger.LedgerRecords.Count;
 
             Rect outRect = new Rect(0, 96, secondColumn.width, secondColumn.height - 150f);
             Rect scrollView = new Rect(0, 0, outRect.width - 20f, (24f * pointKeys) + 16);
@@ -196,11 +198,11 @@ namespace ToolkitPoints.Windows
 
             Rect row = new Rect(10, 10, scrollView.width - 20f, 24f);
 
-            if (!activeLedgerPointsNull)
+            if (!ledgerRecordsNull)
             {
-                foreach (KeyValuePair<string, int> keyValuePair in activeLedger.Points)
+                foreach (LedgerRecord record in activeLedger.LedgerRecords)
                 {
-                    DoLedgerRow(row, keyValuePair);
+                    DoLedgerRow(row, record);
                     row.y += row.height;
                 }
             }
@@ -212,25 +214,23 @@ namespace ToolkitPoints.Windows
             Text.Font = original;
         }
 
-        private void DoLedgerRow(Rect row, KeyValuePair<string, int> keyValuePair)
+        private void DoLedgerRow(Rect row, LedgerRecord ledgerRecord)
         {
             GUI.BeginGroup(row);
 
             Rect label = new Rect(0, 0, 300f, 24f);
             Rect pointLabel = new Rect(304f, 0, 200f, 24f);
 
-            Viewer viewer = ViewerController.GetViewer(keyValuePair.Key);
+            Viewer viewer = ViewerController.GetViewer(Service.Twitch, ledgerRecord.Username);
 
-            string viewerLabel = selectedViewerName == keyValuePair.Key
-                ? TCText.ColoredText(viewer.DisplayName, ColorLibrary.Gold)
-                : viewer.DisplayName;
+            string viewerLabel = TCText.ColoredText(ledgerRecord.Username, ColorLibrary.Gold);
 
             if (Widgets.ButtonText(label, viewerLabel, false))
             {
-                UpdateSelectedViewer(keyValuePair.Key);
+                UpdateSelectedViewer(ledgerRecord.Username);
             }
 
-            Widgets.Label(pointLabel, $"{keyValuePair.Value} {ToolkitPointsSettings.pointsBaseName}");
+            Widgets.Label(pointLabel, $"{ledgerRecord.PointBalance} {ToolkitPointsSettings.pointsBaseName}");
 
             GUI.EndGroup();
         }
@@ -238,18 +238,13 @@ namespace ToolkitPoints.Windows
 
         private void UpdateSelectedViewer(string username)
         {
-            if (activeLedger.Points == null)
+            if (activeLedger.LedgerRecords == null)
             {
-                activeLedger.Points = new Dictionary<string, int>();
+                activeLedger.LedgerRecords = new List<LedgerRecord>();
             }
 
-            if (!activeLedger.Points.ContainsKey(username))
-            {
-                activeLedger.Points.Add(username, 0);
-            }
-
-            selectedViewerName = activeLedger.Points.Where((keyPair) => keyPair.Key == username).FirstOrDefault().Key;
-            selectedViewerPoints = activeLedger.Points[selectedViewerName];
+            selectedViewerName = username;
+            selectedViewerPoints = activeLedger.GetLedgerRecord(username, Service.Twitch).PointBalance;
             selectedViewerPointsCached = selectedViewerPoints;
 
             viewerSearch = "";
@@ -267,7 +262,7 @@ namespace ToolkitPoints.Windows
                 }
                 else
                 {
-                    activeLedger.Points[selectedViewerName] = selectedViewerPoints;
+                    activeLedger.GetLedgerRecord(selectedViewerName, Service.Twitch).PointBalance = selectedViewerPoints;
                     selectedViewerPointsCached = selectedViewerPoints;
                 }
             }
