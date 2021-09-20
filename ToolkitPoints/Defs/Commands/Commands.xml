@@ -5,17 +5,15 @@
     <commandText>bal</commandText>
     <enabled>true</enabled>
     <commandClass>ToolkitPoints.CommandMethods.Balance</commandClass>
-    <requiresMod>false</requiresMod>
-    <requiresBroadcaster>false</requiresBroadcaster>
+    <permissionRole>Viewer</permissionRole>
   </ToolkitCore.Models.ToolkitChatCommand>
   
   <ToolkitCore.Models.ToolkitChatCommand>
     <defName>AwardPoints</defName>
     <commandText>awardpoints</commandText>
     <enabled>true</enabled>
-    <commandClass>ToolkitPoints.CommandMethods.RewardPoints</commandClass>
-    <requiresMod>true</requiresMod>
-    <requiresBroadcaster>false</requiresBroadcaster>
+    <commandClass>ToolkitPoints.CommandMethods.AwardPoints</commandClass>
+    <permissionRole>Mod</permissionRole>
   </ToolkitCore.Models.ToolkitChatCommand>
 
   <ToolkitCore.Models.ToolkitChatCommand>
@@ -23,7 +21,6 @@
     <commandText>takepoints</commandText>
     <enabled>true</enabled>
     <commandClass>ToolkitPoints.CommandMethods.TakePoints</commandClass>
-    <requiresMod>true</requiresMod>
-    <requiresBroadcaster>false</requiresBroadcaster>
+    <permissionRole>Broadcaster</permissionRole>
   </ToolkitCore.Models.ToolkitChatCommand>
 </Defs>

@@ -20,7 +20,7 @@ namespace ToolkitPoints
             foreach (Viewer viewer in ViewerList.Instance.All)
             {
                 int minutesSinceLastMessage = DateTime.Now.Subtract(viewer.LastSeen()).Minutes;
-                if (minutesSinceLastMessage <= 30)
+                if (minutesSinceLastMessage <= minutesTillInactive)
                 {
                     activeViewers.Add(viewer);
                     Log.Message($"Viewer last seen {minutesSinceLastMessage} minutes ago added to active viewer list.");

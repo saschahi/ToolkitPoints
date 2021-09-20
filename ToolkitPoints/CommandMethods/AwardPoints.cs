@@ -12,9 +12,9 @@ using Verse;
 
 namespace ToolkitPoints.CommandMethods
 {
-    public class RewardPoints : CommandMethod
+    public class AwardPoints : CommandMethod
     {
-        public RewardPoints(ToolkitChatCommand command) : base(command)
+        public AwardPoints(ToolkitChatCommand command) : base(command)
         {
 
         }
@@ -29,17 +29,21 @@ namespace ToolkitPoints.CommandMethods
                 return;
             }
 
-            string username = args[0].Replace("@", "");
-
-            if (!int.TryParse(args[1], out int points))
+            string username = args[1].Replace("@", "");
+            //Remove
+            Log.Message("points to reward: " + args[2]);
+            if (!int.TryParse(args[2], out int points))
             {
                 TwitchWrapper.SendChatMessage($"@{command.Username()} to award {ToolkitPointsSettings.pointsBaseName} make sure to include the amount after the username.");
                 return;
             }
 
-            Points.AddPoints(username, command.Service(), points);
+            ViewerBalance viewerBalance = ToolkitPointsSettings.activeLedger.GetViewerBalance(username);
+            viewerBalance.AddPoints(points);
 
-            MessageSender.SendMessage($"@{username} you have been awarded {points} {ToolkitPointsSettings.pointsBaseName} from @{command.Username()}", command.Service());
+            MessageSender.SendMessage($"@{username} you have been awarded {points} {ToolkitPointsSettings.pointsBaseName} from @{command.Username()}," +
+                $" giving you a new balance of {viewerBalance.Points} {ToolkitPointsSettings.pointsBaseName}"
+                , command.Service());
         }
     }
 }

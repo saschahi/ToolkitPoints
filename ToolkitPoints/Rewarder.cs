@@ -32,25 +32,11 @@ namespace ToolkitPoints
         {
             Log.Message($"Total viewers to reward points: {TCText.ColoredText(viewers.Count.ToString(), ColorLibrary.BlueGreen)}");
 
-            if (Ledgers.Instance == null)
-            {
-                Log.Error("ledger instance null");
-                return;
-            }
-
-            Ledger activeLedger = Ledgers.ActiveLedger();
-
-            if (activeLedger == null)
-            {
-                Log.Error("Current Active Ledger is null. Report to mod author.");
-                return;
-            }
-
             foreach(Viewer viewer in viewers)
             {
-                LedgerRecord ledgerRecord = activeLedger.GetLedgerRecord(viewer.Username, viewer.Service);
+                ViewerBalance balance = ToolkitPointsSettings.activeLedger.GetViewerBalance(viewer.Username);
 
-                ledgerRecord.PointBalance += ToolkitPointsSettings.pointsPerReward;
+                balance.AddPoints(ToolkitPointsSettings.pointsPerReward);
             }
         }
     }

@@ -30,13 +30,13 @@ namespace ToolkitPoints
 
         static void SaveGame_PostFix()
         {
-            SaveConfig.SaveAll();
+            SaveLoadUtility.SaveAll();
         }
 
         static void LoadGame_PostFix()
         {
             Log.Message("Running loadgame postfix");
-            SaveConfig.LoadAll();
+            SaveLoadUtility.LoadAll();
         }
     }
 }

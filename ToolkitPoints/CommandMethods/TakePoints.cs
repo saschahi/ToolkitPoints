@@ -28,17 +28,20 @@ namespace ToolkitPoints.CommandMethods
                 return;
             }
 
-            string username = args[0].Replace("@", "");
+            string username = args[1].Replace("@", "");
 
-            if (!int.TryParse(args[1], out int points))
+            if (!int.TryParse(args[2], out int points))
             {
                 TwitchWrapper.SendChatMessage($"@{command.Username()} to take {ToolkitPointsSettings.pointsBaseName} make sure to include the amount after the username.");
                 return;
             }
 
-            Points.RemovePoints(username, command.Service(), points);
+            ViewerBalance viewerBalance = ToolkitPointsSettings.activeLedger.GetViewerBalance(username);
+            viewerBalance.RemovePoints(points);
 
-            MessageSender.SendMessage($"@{username} you have had {points} {ToolkitPointsSettings.pointsBaseName} taken from you by @{command.Username()}", command.Service());
+            MessageSender.SendMessage($"@{username} you have had {points} {ToolkitPointsSettings.pointsBaseName} taken from you by @{command.Username()}," +
+                $" giving you a new balance of {viewerBalance.Points} {ToolkitPointsSettings.pointsBaseName}",
+                command.Service());
         }
     }
 }

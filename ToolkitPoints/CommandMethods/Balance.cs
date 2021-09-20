@@ -20,7 +20,9 @@ namespace ToolkitPoints.CommandMethods
 
         public override void Execute(ICommand command)
         {
-            MessageSender.SendMessage($"@{command.Username()} you have {Points.Balance(command.Username(), command.Service())} {ToolkitPointsSettings.pointsBaseName}", command.Service());
+            ViewerBalance balance = ToolkitPointsSettings.activeLedger.GetViewerBalance(command.Username());
+
+            MessageSender.SendMessage($"@{command.Username()} you have {balance.Points} {ToolkitPointsSettings.pointsBaseName}", command.Service());
         }
     }
 }

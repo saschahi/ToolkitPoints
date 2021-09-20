@@ -19,18 +19,6 @@ namespace ToolkitPoints
                 Window_ModSettings window = new Window_ModSettings(LoadedModManager.GetMod<ToolkitPoints>());
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
-            }),
-            new FloatMenuOption("Ledger", delegate ()
-            {
-                ManageLedgerWindow window = new ManageLedgerWindow();
-                Find.WindowStack.TryRemove(window.GetType());
-                Find.WindowStack.Add(window);
-            }),
-            new FloatMenuOption("All Ledgers", delegate ()
-            {
-                LedgersWindow window = new LedgersWindow();
-                Find.WindowStack.TryRemove(window.GetType());
-                Find.WindowStack.Add(window);
             })
         };
     }
